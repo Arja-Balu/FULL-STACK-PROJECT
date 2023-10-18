@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard-Find My Book</title>
+    <style>
+        body, html, canvas {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            background-color: black;
+            position: relative;
+        }
+        .view {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.5s ease-in-out;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        #firstView {
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 2;
+            transform: translateY(0);
+        }
+
+        #secondView {
+            background-color: rgba(0, 0, 0, 0.7);
+            transform: translateY(100%);
+            flex-direction: column; 
+            align-items: flex-start;
+            text-align: left;
+            z-index: 1;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            right: 0;
+            padding: 15px 30px;
+            z-index: 1000;
+        }
+
+        header a {
+            text-decoration: none;
+            color: white;
+            background-color: blue;
+            padding: 10px 15px;
+            border-radius: 4px;
+            margin-left: 10px;
+            transition: background-color 0.3s;
+        }
+
+        header a:hover {
+            background-color: aqua;
+        }
+
+        .view {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh; 
+            width: 100vw;
+            text-align: center;
+            box-sizing: border-box;
+            padding: 300px;
+        }
+
+        #secondView ol {
+            padding-left: 20px;
+            list-style: none;
+            counter-reset: item;
+        }
+
+        #secondView li:before {
+            content: '• ';
+            counter-increment: item;
+            position: relative;
+            top: -2px;
+            margin-right: 5px;
+            color: #00ffaa;
+            font-size: 50px;
+        }
+
+        .g1 {
+            color: white;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<header>
+    <a href="signup.html">Sign Up</a>
+    <a href="login.html">Login</a>
+</header>
+
+<div id="firstView" class="view">
+    In a vast world of knowledge, "Find My Book" is your compass. Here, students connect, not just to seek out textbooks, but to share their passion for learning. Dive deep into our community and let each book discovered guide your academic quest. A new chapter of collaborative learning awaits. Welcome to a realm where every book counts. Discover, share, and flourish.
+</div>
+
+<div id="secondView" class="view">
+    <h2 class="g1"><u>How to Use "Find My Book"</u></h2>
+    <ol class="g1">
+        <li class="g1">Sign up: Create a new account for a personalized experience.</li>
+        <li class="g1">Login: Already a member? Just login and dive in!</li>
+        <li class="g1">Ask for a Book: Let the community know what you're looking for.</li>
+        <li class="g1">Your Query: Your request will be automatically added to the "asked books" section with your username.</li>
+        <li class="g1">Discover Uploaded Books: Browse through the "uploaded books" section to find and download what you need.</li>
+    </ol>
+</div>
+
+<canvas id="starfield"></canvas>
+
+<script>
+    const canvas = document.getElementById("starfield");
+    const ctx = canvas.getContext("2d");
+    const stars = [];
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    let speedFactor = 1;
+
+    canvas.width = width;
+    canvas.height = height;
+
+    class Star {
+        constructor() {
+            this.x = Math.random() * width;
+            this.y = Math.random() * height;
+            this.z = Math.random() * width;
+            this.color = `hsl(0, 0%, 100%)`;
+        }
+
+        update() {
+            this.z -= speedFactor;
+            if (this.z <= 0) {
+                this.z = width;
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+            }
+        }
+
+        show() {
+            let x = (this.x - width / 2) * (width / this.z);
+            x += width / 2;
+
+            let y = (this.y - height / 2) * (width / this.z);
+            y += height / 2;
+
+            let r = 2;
+            ctx.beginPath();
+            ctx.fillStyle = this.color;
+            ctx.arc(x, y, r, 0, 2 * Math.PI);
+            ctx.fill();
+        }
+    }
+
+    for (let i = 0; i < 1000; i++) {
+        stars.push(new Star());
+    }
+
+    function animate() {
+        ctx.fillStyle = "rgba(0,0,0,0.1)";
+        ctx.fillRect(0, 0, width, height);
+
+        for (let star of stars) {
+            star.update();
+            star.show();
+        }
+
+        requestAnimationFrame(animate);
+    }
+
+    animate();
+
+    const firstView = document.getElementById("firstView");
+    const secondView = document.getElementById("secondView");
+
+    document.addEventListener("mousemove", (e) => {
+        if (e.clientY < 10) {
+            firstView.style.transform = "translateY(-100%)";
+            secondView.style.transform = "translateY(0)";
+        } else if (e.clientY > window.innerHeight - 10) {
+            firstView.style.transform = "translateY(0)";
+            secondView.style.transform = "translateY(100%)";
+        }
+        speedFactor = 4 * (window.innerHeight - e.clientY) / window.innerHeight + 1;
+    });
+
+    window.addEventListener('resize', () => {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+    });
+</script>
+
+</body>
+
+</html>

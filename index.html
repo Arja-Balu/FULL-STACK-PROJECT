@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Find My Book</title>
+    <link rel="stylesheet" href="index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans&family=Young+Serif&display=swap" rel="stylesheet">
+
+    <style>
+        #askForBook { display: block; }
+    </style>
+</head>
+
+<body>
+    <header>
+        <img src="piccc.jpg" alt="Website Icon" id="websiteIcon">
+        <h1 class="red">Find My Book</h1>
+        <button id="one" onclick="logout()">Logout</button>
+    </header>
+    <div class="dashboard">
+
+        <nav class="sidebar">
+            <ul>
+                <li><button data-content="askForBook" onclick="showContent('askForBook')">Ask for a Book</button></li>
+                <li><button data-content="uploadedBooks" id="btnUploadedBooks">Uploaded Books</button></li>
+                <li><button data-content="accountDetails" id="btnAccountDetails">Account Details</button></li>
+                <li><button data-content="askedbooks" id="btnAskedBooks">Asked Books</button></li>
+            </ul>
+        </nav>
+        <main>
+            <div id="askForBook" class="content">
+                <h2 style="color: rgb(255, 255, 255);"><u>Ask for a Book</u></h2>
+                <form id="bookQueryForm">
+                    <input type="text" id="bookName" placeholder="Enter book name with additional information" required>
+                    <button type="submit">Ask</button>
+                </form>
+            </div>
+
+            <div id="uploadedBooks" class="content">
+                <h2><u>Uploaded Books</u></h2>
+                <ul id="uploadedBooksList"></ul>
+            </div>
+            <div id="accountDetails" class="content">
+                <h2 style="text-align: center;"><u>Account Details</u></h2>
+                <p>Username: <span id="usernameDisplay"></span></p>
+                <p>Email: <span id="emailDisplay"></span></p>
+                <input type="text" id="newUsername" placeholder="New Username">
+                <button onclick="updateUsername()">Update Username</button>
+            </div>
+            <div id="askedbooks" class="content">
+                <h2><u>Asked Books</u></h2>
+                <ul id="askedList"></ul>
+            </div>
+
+        </main>
+    </div>    
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-storage.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-firestore.js"></script>
+    <script src="index.js"></script>
+</body>
+
+</html>
